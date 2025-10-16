@@ -1,0 +1,747 @@
+/* File: QLPT.css - ĐÃ HOÀN THIỆN THEO THIẾT KẾ MỚI NHẤT */
+
+/* --- 1. BIẾN MÀU CHUNG & RESET --- */
+:root {
+    /* MÀU SẮC */
+    --primary-blue: #5F89F2;  /* Xanh dương */
+    --primary-pink: #C7387B;  /* Hồng/Tím */
+    --bg-main: #201C38;       /* Nền tím than đậm */
+    --bg-sidebar: #1A1730;    /* Tối hơn một chút cho sidebar */
+    --text-color: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border-color-divider: rgba(255, 255, 255, 0.1); /* Đường kẻ chia */
+    --sidebar-active-bg: #2C284A; 
+    --input-bg: rgba(255, 255, 255, 0.05);
+
+    /* Màu Gradient dùng cho Icons và Text */
+    --icon-gradient: linear-gradient(to right, var(--primary-pink), var(--primary-blue));
+    
+    /* Khoảng cách dọc cho menu */
+    --nav-item-padding-y: 25px; 
+    /* --- 1. BIẾN MÀU CHUNG & RESET --- */
+    /* ... (Các biến đã có: primary-blue, primary-pink, bg-main, etc.) ... */
+
+    /* CÁC BIẾN CẦN THÊM/SỬA */
+    
+    --light-text: var(--text-color); /* Đồng bộ với var(--text-color) */
+
+    /* Biến dùng cho Modal/Hover/Dropdown */
+    --dark-navy-400: #2C284A; /* Màu nền cho sidebar active/hover (đã có trong sidebar-active-bg, nhưng dùng trong các khối khác) */
+    --dark-navy-300: #383752; /* Màu nền cho dropdown item hover/tab hover (dùng trong input-bg, nhưng cần riêng) */
+    
+    /* Biến dùng cho Nút Thêm và Tabs */
+    --gradient-button: linear-gradient(90deg, var(--primary-blue), var(--primary-pink)); /* Gradient cho nút Add */
+    --gradient-active-bar: linear-gradient(to right, var(--primary-pink), var(--primary-blue)); /* Gradient cho active item trong dropdown */
+
+    /* Biến dùng cho Status */
+    --status-available-color: #45D688; /* Màu chữ Xanh lá */
+    --status-rented-color: #FF9F43;     /* Màu chữ Cam */
+    --status-maint-color: #FF6384;      /* Màu chữ Đỏ/Hồng */
+    
+    /* Dùng cho Header */
+    --white: #FFFFFF; /* Đồng bộ với var(--text-color) */
+
+    /* ... (Các biến khác) ... */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif; 
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- 2. SIDEBAR --- */
+.dashboard-sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    padding: 30px 0;
+    flex-shrink: 0; 
+    position: relative;
+    border-right: 1px solid var(--border-color-divider);
+}
+
+/* SIDEBAR BORDER GLOW (Gradient dọc) */
+.dashboard-sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-blue), var(--primary-pink));
+    opacity: 0.8; 
+    filter: blur(1px);
+}
+/* Thiết lập chung cho tất cả Nav Items */
+.dashboard-sidebar .nav-item {
+    /* Đảm bảo Transition cho hiệu ứng mượt */
+    transition: all 0.3s ease; 
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin: 5px 15px;
+    cursor: pointer;
+    color: var(--light-text); /* Màu chữ mặc định */
+}
+
+/* -------------------------------------- */
+/* --- HIỆU ỨNG HOVER (Cho các mục KHÔNG Active) --- */
+/* -------------------------------------- */
+
+.dashboard-sidebar .nav-item:not(.active):hover {
+    /* 1. MÀU NỀN */
+    /* Thay đổi màu nền tối hơn 1 chút hoặc thêm độ trong suốt */
+    background-color: var(--dark-navy-400); 
+    
+    /* 2. HIỆU ỨNG SÁNG NEON (GLOW) */
+    /* Sử dụng box-shadow với màu neon (ví dụ: primary-blue) */
+    box-shadow: 0 0 10px rgba(106, 130, 251, 0.3); /* Sáng mờ màu xanh */
+
+    /* 3. MÀU CHỮ VÀ ICON */
+    /* Đổi màu chữ/icon thành màu neon khi hover để tạo hiệu ứng sáng */
+    color: var(--primary-blue); /* Màu xanh neon khi hover */
+}
+
+/* -------------------------------------- */
+/* --- HIỆU ỨNG ACTIVE (Mục đang được chọn) --- */
+/* -------------------------------------- */
+
+.dashboard-sidebar .nav-item.active {
+    background-color: var(--dark-navy-400); /* Màu nền đậm hơn cho mục active */
+    color: var(--primary-pink); /* Màu chữ neon (hồng) */
+    font-weight: 600;
+
+    /* Dải màu neon bên trái (pink-blue gradient) */
+    border-left: 4px solid transparent;
+    border-image: linear-gradient(to bottom, var(--primary-pink), var(--primary-blue)) 1;
+    
+    /* Hiệu ứng sáng nổi bật cho mục active */
+    box-shadow: 0 0 15px rgba(255, 110, 140, 0.4); 
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* ÁP DỤNG GRADIENT cho tiêu đề Dashboard */
+    background: var(--icon-gradient); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
+    
+    padding: 0 30px 40px;
+    border-bottom: 1px solid var(--border-color-divider); 
+    margin-bottom: 10px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding-top: 0; 
+}
+/* CÁC MỤC MENU */
+.nav-item {
+    display: flex;
+    /* Dùng align-items: center để căn chỉnh icon và span */
+    align-items: center; 
+    
+    padding: var(--nav-item-padding-y) 30px; 
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
+    position: relative;
+}
+
+/* Thiết lập chiều rộng cố định cho vùng icon và căn chỉnh text/icon */
+.nav-item i {
+    /* Đảm bảo chiều rộng cố định để chữ bắt đầu từ một điểm nhất quán */
+    width: 25px; 
+    text-align: center; /* Căn giữa icon trong vùng 25px */
+    margin-right: 15px; /* Khoảng cách giữa vùng icon và chữ */
+    
+    font-size: 1.2rem;
+    background: var(--icon-gradient); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;               
+    -webkit-text-fill-color: transparent; 
+    transition: all 0.2s;
+}
+
+/* Đảm bảo text span được căn giữa tuyệt đối với container */
+.nav-item span {
+    /* Flex-grow 1 cho phép text chiếm hết không gian còn lại */
+    flex-grow: 1; 
+    /* Đảm bảo text có cùng chiều cao dòng với icon */
+    line-height: 1.2rem; 
+}
+
+/* Các thuộc tính còn lại của .nav-item giữ nguyên */
+/* ... */
+/* ĐƯỜNG KẺ DƯỚI MỖI MỤC (trừ mục cuối và Đăng xuất) */
+.nav-item:not(.logout) {
+    /* Mọi mục trừ Đăng xuất đều có border-bottom */
+    border-bottom: 1px solid var(--border-color-divider);
+}
+.nav-item.settings-item {
+    border-bottom: 1px solid var(--border-color-divider);
+}
+.nav-item.settings-item {
+    /* Đảm bảo nó không bị ảnh hưởng bởi logic cũ */
+    border-bottom: 1px solid var(--border-color-divider); 
+    margin-bottom: 0 !important;
+}
+
+/* Xóa border-bottom của mục "Cài đặt" và tạo khoảng cách lớn trước Đăng xuất */
+.sidebar-nav ul li:nth-child(6) { /* Cài đặt */
+     border-bottom: 1px solid transparent; 
+     margin-bottom: 30px; 
+     padding-bottom: var(--nav-item-padding-y);
+}
+
+
+
+/* Đảm bảo icon active vẫn là gradient */
+.nav-item.active i {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* ICON ĐĂNG XUẤT */
+.nav-item.logout {
+    position: absolute;
+    bottom: 30px;
+    left: 0;   /* Căn sang trái của Sidebar */
+    right: 0; 
+    padding-left: 30px;
+    /* Đường kẻ trên Đăng xuất */
+    border-top: 1px solid var(--border-color-divider); 
+    padding-top: 20px;
+     display: flex; /* Giữ nguyên vì bạn đã dùng display: flex cho .nav-item */
+    text-decoration: none;
+}
+/* Đảm bảo icon đăng xuất vẫn có gradient */
+.nav-item.logout i {
+    background: var(--icon-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+/* TRONG FILE dashboard.css */
+
+/* ... khối .nav-item giữ nguyên ... */
+
+
+/* HIỆU ỨNG HOVER CHUNG cho tất cả các mục menu */
+.nav-item:hover:not(.active) {
+    /* Đổi màu nền tối hơn một chút khi hover */
+    background-color: var(--sidebar-active-bg);
+    /* Thanh sọc nhẹ bên trái khi hover */
+    border-left: 2px solid var(--primary-pink); 
+    padding-left: 28px; /* Tăng padding để bù trừ cho 2px border */
+    color: var(--text-color); /* Chữ sáng hơn */
+}
+
+/* ĐẢM BẢO ICON CŨNG ĐỔI MÀU KHI HOVER (từ màu mờ sang màu sáng hơn) */
+.nav-item:hover:not(.active) i {
+    color: var(--text-color) !important;
+}
+
+/* Mục ĐĂNG XUẤT cần có hover đặc biệt cho icon gradient */
+.nav-item.logout:hover {
+    background-color: var(--sidebar-active-bg);
+    border-left: 2px solid var(--primary-pink); 
+    padding-left: 28px; 
+    color: var(--text-color);
+}
+
+/* Đảm bảo trạng thái active không bị ảnh hưởng khi hover */
+.nav-item.active:hover {
+    /* Giữ nguyên kiểu active đã có */
+    background-color: var(--sidebar-active-bg); 
+    border-left: 4px solid var(--primary-pink);
+    padding-left: 26px;
+    color: var(--text-color);
+}
+
+/* --- 3. MAIN CONTENT --- */
+.dashboard-main-content {
+    flex-grow: 1;
+    padding: 0 40px;
+}
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+
+/* HEADER */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid var(--border-color-divider); 
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: var(--input-bg);
+    border-radius: 15px;
+    padding: 8px 15px;
+    width: 400px;
+}
+.search-box i {
+    color: var(--text-muted);
+    margin-right: 10px;
+}
+.search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    width: 100%;
+    font-size: 1rem;
+}
+.header-profile-icon {
+    font-size: 1.8rem;
+    color: var(--text-muted);
+}
+
+/* KEY STATICS */
+.statics-grid {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+.static-card {
+    flex: 1;
+    padding: 25px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-blue));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.card-label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.card-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+/* --- 5. KHU VỰC QUẢN LÝ KHÁCH HÀNG --- */
+.client-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    background: var(--icon-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Trong file dashboard.css */
+
+/* --- 5. KHU VỰC QUẢN LÝ KHÁCH HÀNG --- */
+/* ... Tiêu đề client-title giữ nguyên ... */
+
+/* KHỐI NÀY ĐÃ ĐIỀU CHỈNH: Cần display: flex để đặt hai panel cạnh nhau */
+.client-content-grid {
+    display: flex;
+    gap: 25px;
+}
+
+/* --- 5. CONTROL PANEL VÀ TABS --- */
+.controls-panel-pt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+/* Nút Thêm Phương Tiện */
+.pt-action-buttons .add-action {
+    background: var(--gradient-button);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(199, 56, 123, 0.6); 
+    transition: filter 0.2s, transform 0.2s;
+}
+.pt-action-buttons .add-action:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+.pt-action-buttons .add-action i {
+    color: var(--text-color); 
+    margin-right: 8px;
+}
+
+/* Các Tabs Lọc Phương Tiện */
+.pt-filter-tabs {
+    display: flex;
+    gap: 10px;
+}
+.pt-tab-item {
+    background-color: var(--input-bg);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+.pt-tab-item i {
+    margin-right: 6px;
+}
+/* Style cho tab active */
+.pt-tab-item.active-tab {
+    background: var(--gradient-button);
+    color: var(--text-color);
+    box-shadow: 0 0 10px rgba(92, 98, 236, 0.5);
+    border: none;
+}
+.pt-tab-item.active-tab i {
+    color: var(--text-color);
+}
+
+
+/* --- 6. DROPDOWN (SELECT) STYLES CHO TABS LỌC --- */
+.tab-dropdown {
+    position: relative; 
+    padding-right: 35px; 
+}
+.dropdown-arrow {
+    font-size: 0.7em;
+    margin-left: 5px;
+    transition: transform 0.2s;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    z-index: 50;
+    margin-top: 10px;
+    padding: 10px;
+    min-width: 180px;
+    background-color: var(--bg-sidebar); /* Dùng bg-sidebar */
+    backdrop-filter: blur(5px); 
+    border-radius: 10px;
+    border: 1px solid var(--primary-blue); /* Dùng primary-blue */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px var(--primary-blue); /* Dùng primary-blue */
+    display: none; 
+}
+.dropdown-item {
+    padding: 8px 12px;
+    font-weight: 500;
+    color: var(--text-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap; 
+}
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.15); 
+}
+.dropdown-item.active-item {
+    background: var(--gradient-active-bar);
+    font-weight: 700;
+}
+.tab-dropdown.open .dropdown-menu {
+    display: block;
+}
+.tab-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* --- 7. BẢNG DỮ LIỆU --- */
+.vehicle-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; 
+}
+.vehicle-table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 10px 15px;
+}
+.vehicle-table td {
+    padding: 15px;
+    font-weight: 500;
+    border-top: 1px solid var(--border-color-divider);
+    border-bottom: 1px solid var(--border-color-divider);
+    background-color: var(--input-bg);
+}
+.vehicle-table tbody tr td:first-child {
+    border-left: 1px solid var(--border-color-divider);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.vehicle-table tbody tr td:last-child {
+    border-right: 1px solid var(--border-color-divider);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Styles cho Trạng thái */
+.status-available,
+.status-rented,
+.status-maint {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 700;
+}
+.status-available {
+    background-color: rgba(69, 214, 136, 0.2); 
+    color: var(--status-available-color); 
+}
+.status-rented {
+    background-color: rgba(255, 159, 67, 0.2); 
+    color: var(--status-rented-color); 
+}
+.status-maint {
+    background-color: rgba(255, 99, 132, 0.2); 
+    color: var(--status-maint-color); 
+}
+
+/* Icon chức năng */
+.function-menu {
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+.function-menu:hover {
+    color: var(--primary-blue);
+}
+/* --- DROP-DOWN MENU STYLES --- */
+
+/* Thẻ bao ngoài để định vị menu con */
+.pt-filter-tabs .tab-dropdown {
+    position: relative; /* Rất quan trọng để định vị menu con */
+}
+
+/* Kiểu dáng chung cho menu dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Đặt menu bên dưới tab */
+    left: 0;
+    margin-top: 5px; /* Khoảng cách với tab */
+    min-width: 180px;
+    background: var(--dark-navy-400); /* Nền menu */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 20; /* Đảm bảo menu hiển thị trên bảng */
+    padding: 8px 0;
+    opacity: 0; /* Mặc định ẩn */
+    visibility: hidden; /* Mặc định ẩn */
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+    display: none;
+}
+
+/* Hiển thị menu khi hover vào tab cha */
+.pt-filter-tabs .tab-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.pt-filter-tabs .tab-dropdown:nth-child(2) .dropdown-menu {
+    /* Điều chỉnh vị trí left để menu không bị chồng chéo */
+    left: 0x; 
+}
+
+/* Kiểu dáng cho từng mục trong menu */
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: var(--light-text);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hiệu ứng hover cho mục trong menu */
+.dropdown-item:hover {
+    background-color: var(--dark-navy-300);
+    color: var(--primary-pink); /* Màu neon khi hover */
+}
+/* Thêm class này vào QLPT.css */
+.dropdown-menu.active {
+    /* Thêm class này vào QLPT.css */
+    display: block; /* <-- BỔ SUNG: Dòng này buộc menu hiển thị */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+/* --- HOVER EFFECTS --- */
+
+/* 1. Nút "Thêm phương tiện" */
+.pt-action-buttons .add-action:hover {
+    /* Đổi màu gradient hoặc màu nền khi hover */
+    background: linear-gradient(90deg, #bb45ff 0%, #ff6e8c 100%); 
+    box-shadow: 0 0 15px rgba(255, 100, 200, 0.6); /* Thêm hiệu ứng neon sáng hơn */
+    transform: translateY(-2px); /* Nhấc nhẹ nút lên */
+}
+
+/* 2. Hiệu ứng Hover cho các Tab Lọc (Trạng thái, Loại xe, Lọc) */
+.pt-filter-tabs .pt-tab-item:not(.active-tab):hover {
+    background-color: var(--dark-navy-300); /* Màu nền tối hơn 1 chút */
+    box-shadow: 0 0 10px rgba(100, 150, 255, 0.2); /* Hiệu ứng sáng nhẹ */
+    color: var(--primary-blue); /* Hoặc đổi màu chữ thành màu xanh neon */
+}
+/* Các Tabs Lọc Phương Tiện */
+
+/* 3. Hiệu ứng Hover cho Sidebar Navigation */
+.sidebar-nav .nav-item:hover:not(.active) {
+    background-color: var(--dark-navy-400); 
+    color: var(--primary-pink); /* Đổi màu chữ/icon thành màu neon */
+}
+
+/* 4. Hiệu ứng Hover cho các nút trong Modal (Thêm/Đóng) */
+/* (Bạn cần áp dụng hiệu ứng hover cho các nút trong modal nếu có) */
+.modal-btn.apply-btn:hover {
+    background: linear-gradient(90deg, #bb45ff 0%, #ff6e8c 100%); 
+    box-shadow: 0 0 15px rgba(255, 100, 200, 0.6);
+}
+
+.modal-btn.close-btn:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+/* --- MODAL OVERLAY (Nền mờ) --- */
+.pt-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Nền tối mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Mặc định ẩn */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* Hiển thị Modal khi có class 'active' */
+
+
+/* --- MODAL CONTENT (Khung hiển thị chính) --- */
+.pt-modal-content {
+    background-color: #2b2b41; /* Màu nền tối */
+    border-radius: 15px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    /* Hiệu ứng neon border */
+    border: 1px solid transparent; 
+    border-image: linear-gradient(45deg, #6a82fb, #ff6e8c) 1;
+    box-shadow: 0 0 20px rgba(106, 130, 251, 0.5); /* Sáng mờ */
+    
+    /* Hiệu ứng Glassmorphism (tùy chọn) */
+    backdrop-filter: blur(10px);
+    background: rgba(43, 43, 65, 0.8);
+}
+
+.modal-title {
+    color: var(--primary-pink); /* Tiêu đề màu neon */
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-form label {
+    display: block;
+    color: var(--light-text);
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.modal-form input,
+.modal-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #383752; /* Màu nền input */
+    color: var(--light-text);
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.modal-form input:focus,
+.modal-form textarea:focus {
+    border-color: var(--primary-blue); /* Viền xanh neon khi focus */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+/* Kiểu dáng cho nút trong Modal (Đóng/Lưu) */
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Nút Hủy (Đóng) */
+.modal-btn.close-btn {
+    background-color: transparent;
+    color: var(--light-text);
+    border: 1px solid #555;
+}
+.modal-btn.close-btn:hover {
+    border-color: var(--primary-pink);
+    color: var(--primary-pink);
+}
+
+/* Nút Lưu (Thêm/Sửa) - Gradient Neon */
+.modal-btn.apply-btn {
+    background: linear-gradient(90deg, #6a82fb 0%, #ff6e8c 100%);
+    color: white;
+}
+.modal-btn.apply-btn:hover {
+    box-shadow: 0 0 15px rgba(255, 110, 140, 0.6);
+}
+.pt-modal-overlay.active {
+    opacity: 1 !important; /* Dùng !important để ghi đè mọi thứ */
+    visibility: visible !important;
+}

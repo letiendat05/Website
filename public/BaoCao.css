@@ -1,0 +1,572 @@
+:root {
+    /* MÀU SẮC */
+    --primary-blue: #5F89F2;  /* Xanh dương */
+    --primary-pink: #C7387B;  /* Hồng/Tím */
+    --bg-main: #201C38;       /* Nền tím than đậm */
+    --bg-sidebar: #1A1730;    /* Tối hơn một chút cho sidebar */
+    --text-color: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border-color-divider: rgba(255, 255, 255, 0.1); /* Đường kẻ chia */
+    --sidebar-active-bg: #2C284A; 
+    --input-bg: rgba(255, 255, 255, 0.05);
+
+    /* Màu Gradient dùng cho Icons và Text */
+    --icon-gradient: linear-gradient(to right, var(--primary-pink), var(--primary-blue));
+    
+    /* Khoảng cách dọc cho menu */
+    --nav-item-padding-y: 25px; 
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif; 
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- 2. SIDEBAR --- */
+.dashboard-sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    padding: 30px 0;
+    flex-shrink: 0; 
+    position: relative;
+    border-right: 1px solid var(--border-color-divider);
+}
+
+/* SIDEBAR BORDER GLOW (Gradient dọc) */
+.dashboard-sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-blue), var(--primary-pink));
+    opacity: 0.8; 
+    filter: blur(1px);
+}
+/* Thiết lập chung cho tất cả Nav Items */
+.dashboard-sidebar .nav-item {
+    /* Đảm bảo Transition cho hiệu ứng mượt */
+    transition: all 0.3s ease; 
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin: 5px 15px;
+    cursor: pointer;
+    color: var(--light-text); /* Màu chữ mặc định */
+}
+
+/* -------------------------------------- */
+/* --- HIỆU ỨNG HOVER (Cho các mục KHÔNG Active) --- */
+/* -------------------------------------- */
+
+.dashboard-sidebar .nav-item:not(.active):hover {
+    /* 1. MÀU NỀN */
+    /* Thay đổi màu nền tối hơn 1 chút hoặc thêm độ trong suốt */
+    background-color: var(--dark-navy-400); 
+    
+    /* 2. HIỆU ỨNG SÁNG NEON (GLOW) */
+    /* Sử dụng box-shadow với màu neon (ví dụ: primary-blue) */
+    box-shadow: 0 0 10px rgba(106, 130, 251, 0.3); /* Sáng mờ màu xanh */
+
+    /* 3. MÀU CHỮ VÀ ICON */
+    /* Đổi màu chữ/icon thành màu neon khi hover để tạo hiệu ứng sáng */
+    color: var(--primary-blue); /* Màu xanh neon khi hover */
+}
+
+/* -------------------------------------- */
+/* --- HIỆU ỨNG ACTIVE (Mục đang được chọn) --- */
+/* -------------------------------------- */
+
+.dashboard-sidebar .nav-item.active {
+    background-color: var(--dark-navy-400); /* Màu nền đậm hơn cho mục active */
+    color: var(--primary-pink); /* Màu chữ neon (hồng) */
+    font-weight: 600;
+
+    /* Dải màu neon bên trái (pink-blue gradient) */
+    border-left: 4px solid transparent;
+    border-image: linear-gradient(to bottom, var(--primary-pink), var(--primary-blue)) 1;
+    
+    /* Hiệu ứng sáng nổi bật cho mục active */
+    box-shadow: 0 0 15px rgba(255, 110, 140, 0.4); 
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* ÁP DỤNG GRADIENT cho tiêu đề Dashboard */
+    background: var(--icon-gradient); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
+    
+    padding: 0 30px 40px;
+    border-bottom: 1px solid var(--border-color-divider); 
+    margin-bottom: 10px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding-top: 0; 
+}
+/* CÁC MỤC MENU */
+.nav-item {
+    display: flex;
+    /* Dùng align-items: center để căn chỉnh icon và span */
+    align-items: center; 
+    
+    padding: var(--nav-item-padding-y) 30px; 
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
+    position: relative;
+}
+
+/* Thiết lập chiều rộng cố định cho vùng icon và căn chỉnh text/icon */
+.nav-item i {
+    /* Đảm bảo chiều rộng cố định để chữ bắt đầu từ một điểm nhất quán */
+    width: 25px; 
+    text-align: center; /* Căn giữa icon trong vùng 25px */
+    margin-right: 15px; /* Khoảng cách giữa vùng icon và chữ */
+    
+    font-size: 1.2rem;
+    background: var(--icon-gradient); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;               
+    -webkit-text-fill-color: transparent; 
+    transition: all 0.2s;
+}
+.nav-item span {
+    flex-grow: 1; 
+    line-height: 1.2rem; 
+}
+/* ĐƯỜNG KẺ DƯỚI MỖI MỤC (trừ mục cuối và Đăng xuất) */
+.nav-item:not(.logout) {
+    border-bottom: 1px solid var(--border-color-divider);
+}
+.nav-item.settings-item {
+    border-bottom: 1px solid var(--border-color-divider);
+}
+.nav-item.settings-item {
+    border-bottom: 1px solid var(--border-color-divider); 
+    margin-bottom: 0 !important;
+}
+
+.sidebar-nav ul li:nth-child(6) { 
+     border-bottom: 1px solid transparent; 
+     margin-bottom: 30px; 
+     padding-bottom: var(--nav-item-padding-y);
+}
+
+.nav-item.active i {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* ICON ĐĂNG XUẤT */
+.nav-item.logout {
+    position: absolute;
+    bottom: 30px;
+    left: 0;   
+    right: 0; 
+    padding-left: 30px;
+    /* Đường kẻ trên Đăng xuất */
+    border-top: 1px solid var(--border-color-divider); 
+    padding-top: 20px;
+     display: flex; 
+    text-decoration: none;
+}
+
+.nav-item.logout i {
+    background: var(--icon-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+
+
+/* HIỆU ỨNG HOVER CHUNG cho tất cả các mục menu */
+.nav-item:hover:not(.active) {
+    background-color: var(--sidebar-active-bg);
+    border-left: 2px solid var(--primary-pink); 
+    padding-left: 28px; /* Tăng padding để bù trừ cho 2px border */
+    color: var(--text-color); /* Chữ sáng hơn */
+}
+
+/* ĐẢM BẢO ICON CŨNG ĐỔI MÀU KHI HOVER (từ màu mờ sang màu sáng hơn) */
+.nav-item:hover:not(.active) i {
+    color: var(--text-color) !important;
+}
+
+/* Mục ĐĂNG XUẤT cần có hover đặc biệt cho icon gradient */
+.nav-item.logout:hover {
+    background-color: var(--sidebar-active-bg);
+    border-left: 2px solid var(--primary-pink); 
+    padding-left: 28px; 
+    color: var(--text-color);
+}
+
+/* Đảm bảo trạng thái active không bị ảnh hưởng khi hover */
+.nav-item.active:hover {
+    /* Giữ nguyên kiểu active đã có */
+    background-color: var(--sidebar-active-bg); 
+    border-left: 4px solid var(--primary-pink);
+    padding-left: 26px;
+    color: var(--text-color);
+}
+
+/* --- 3. MAIN CONTENT --- */
+.dashboard-main-content {
+    flex-grow: 1;
+    padding: 0 40px 20px;
+}
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+
+/* HEADER */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid var(--border-color-divider); 
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: var(--input-bg);
+    border-radius: 15px;
+    padding: 8px 15px;
+    width: 400px;
+}
+.search-box i {
+    color: var(--text-muted);
+    margin-right: 10px;
+}
+.search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    width: 100%;
+    font-size: 1rem;
+}
+.header-profile-icon {
+    font-size: 1.8rem;
+    color: var(--text-muted);
+}
+
+/* KEY STATICS */
+.statics-grid {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+.static-card {
+    flex: 1;
+    padding: 25px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-blue));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.card-label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.card-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+/* --- 5. KHU VỰC QUẢN LÝ KHÁCH HÀNG --- */
+.client-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    background: var(--icon-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.client-content-grid {
+    display: flex;
+    gap: 25px;
+}
+/* ========================================= */
+/* --- A. KHU VỰC QUẢN LÝ BÁO CÁO --- */
+/* ========================================= */
+.report-management-area {
+    padding: 20px 0;
+    width: 100%;
+}
+.report-title {
+    font-size: 2.5rem;
+    color: var(--primary-pink); 
+    margin-bottom: 30px;
+}
+
+.report-data-grid {
+    /* Sử dụng grid để chia cột */
+    display: grid;
+    /* Phân chia không gian 2 phần và 1 phần, tổng 3 phần */
+    grid-template-columns: 2fr 1fr; 
+    gap: 30px; /* Khoảng cách giữa các cột/hàng */
+    
+    /* Rất quan trọng: Đảm bảo grid chiếm hết chiều rộng của vùng chứa */
+    width: 100%; 
+    margin-top:20px;
+}
+.report-data-grid > div {
+    display: flex;
+    justify-content: center; /* Căn thẻ con sát lề trái của ô Grid */
+}
+.report-data-grid > div:first-child { 
+     justify-content: center; 
+}
+
+/* --- B. ĐIỀU KHIỂN THỜI GIAN (TOP BAR) --- */
+.time-controls-panel {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color-divider);
+}
+
+.time-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.time-group .label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--light-text);
+}
+
+/* Nút Chọn thời gian */
+.time-dropdown-btn {
+    background-color: var(--status-completed-contract); /* Màu xanh lá/vàng như ảnh */
+    color: var(--bg-sidebar); 
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.time-dropdown-btn:hover {
+    background-color: #55d082;
+}
+
+/* Các Tabs Thời gian (Năm, Quý, Tháng) */
+.time-tabs {
+    display: flex;
+    background-color: var(--input-bg);
+    border-radius: 8px;
+    padding: 5px;
+    width:400px;
+    justify-content: center;
+}
+.time-tab-item {
+    padding: 8px 15px;
+    font-size: 1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.time-tab-item:not(.active-tab):hover {
+    color: var(--text-color); /* Chữ sáng hơn khi hover */
+    background-color: rgba(255, 255, 255, 0.08); /* Nền hơi sáng nhẹ */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Thêm bóng mờ nhẹ */
+}
+.time-tab-item.active-tab {
+    background-color: var(--primary-blue);
+    color: #fff;
+    font-weight: 600;
+    background-color: var(--primary-blue);
+    color: #fff;
+    font-weight: 600;
+    /* Thêm hiệu ứng neon glow nhẹ cho tab đang active */
+    box-shadow: 0 0 15px rgba(66, 133, 244, 0.6); 
+}
+
+/* --- C. KHU VỰC DỮ LIỆU (GRID) --- */
+.report-data-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Chia 2 cột: 2 phần và 1 phần */
+    gap: 30px;
+}
+
+/* Thẻ báo cáo chung */
+.report-card {
+    background-color: var(--bg-card); /* Nền tối của thẻ */
+    border: 1px solid var(--border-color-divider);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    max-width: 100%;
+    display: flex; /* Dùng flex cho nội dung bên trong thẻ */
+    flex-direction: column;
+}
+
+.report-card.large-chart {
+    grid-column: span 1; /* Đảm bảo nó chiếm đúng 1/2 cột (trừ khi trên 1 hàng) */
+    height: 400px; /* Chiều cao cố định cho các biểu đồ lớn */
+}
+.report-card.chart-card {
+   /* Đảm bảo nó là flex container để căn giữa nội dung */
+    display: flex;
+    flex-direction: column;
+    /* Có thể giảm padding để nội dung chiếm nhiều không gian hơn */
+    padding: 15px; 
+    
+    /* Căn giữa nội dung chính (chart-container) */
+    align-items: center; 
+}
+.report-card.chart-card .chart-container {
+    position: relative;
+    /* Tăng Chiều Dài (Ngang) */
+    width: 600px; /* Đổi từ 450px lên 600px */
+    /* Tăng Chiều Rộng (Dọc) */
+    height: 350px; /* Đổi từ 250px lên 350px */
+    
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    
+    /* Điều chỉnh lề dưới cho hợp lý với chiều cao mới */
+    margin-bottom: 0px; 
+}
+.chart-container-monthly {
+    position: relative;
+    width: 100%; /* Quan trọng: Cho nó chiếm toàn bộ chiều rộng của thẻ cha (large-chart) */
+    height: 100%; /* Quan trọng: Cho nó chiếm toàn bộ chiều cao của thẻ cha */
+    padding-top: 20px; /* Thêm padding trên để tách tiêu đề và biểu đồ */
+}
+.chart-container-contract {
+    position: relative;
+    width: 100%; 
+    height: 100%; 
+    padding-top: 20px; 
+    padding-bottom: 20px; /* Thêm padding dưới để tránh nhãn bị sát mép */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+   
+/* Hàng 2 chiếm hết chiều rộng */
+.report-data-grid > .report-card:nth-child(3),
+.report-data-grid > .report-card:nth-child(4) {
+    grid-row: 2;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--light-text);
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 10px;
+}
+
+/* --- D. THẺ SỐ LIỆU CHÍNH (KPI CARD) --- */
+.kpi-card {
+    display: flex;
+    flex-direction: column;
+}
+.kpi-group-wrapper {
+    display: grid;
+    grid-template-columns: 1fr; /* Xếp dọc */
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.kpi-item {
+    padding: 15px;
+    background-color: var(--input-bg);
+    border-radius: 8px;
+}
+.kpi-item.total-revenue {
+    border-left: 5px solid var(--primary-pink);
+}
+.kpi-item.total-contracts {
+    border-left: 5px solid var(--primary-blue);
+}
+
+.kpi-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 5px;
+}
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+}
+.revenue-color {
+    color: var(--primary-pink); /* Màu doanh thu: Hồng */
+}
+.contract-color {
+    color: var(--primary-blue); /* Màu hợp đồng: Xanh dương */
+}
+
+.kpi-change {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 5px;
+}
+.kpi-change.positive {
+    color: var(--status-completed-contract); /* Xanh lá cây */
+}
+
+.contract-legend {
+    font-size: 0.85rem;
+    margin-top: 10px;
+}
+.legend-item {
+    margin-right: 15px;
+}
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.legend-item .dot.revenue-color { background-color: var(--primary-pink); }
+.legend-item .dot.contract-color { background-color: var(--primary-blue); }
+
+
