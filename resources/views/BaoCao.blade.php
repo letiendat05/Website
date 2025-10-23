@@ -49,7 +49,7 @@
             <i class="fa-solid fa-gear"></i>
             <span>Cài đặt</span>
         </li><br>
-        <a href="/dangnhap" class="nav-item logout" data-page="dangxuat">
+        <a href="login.html" class="nav-item logout" data-page="dangxuat">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Đăng xuất</span>
         </a>
